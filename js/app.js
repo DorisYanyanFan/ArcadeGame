@@ -1,13 +1,15 @@
 // Enemies our player must avoid
-var Enemy = function(row) {
+var Enemy = function(row, type) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    this.x = -50;
+    this.x = -101;
     this.y = (83 * row) - 20;
+    let speedArray = [180, 250, 300, 360];
+    this.speed = speedArray[type];
 };
 
 // Update the enemy's position, required method for game
@@ -16,6 +18,11 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    if (this.x < 800) {
+        this.x = this.x + dt * this.speed;   /*this.x = dt * this.speed would end up with wiered animation, why?*/
+    } else {
+        this.x = -101;
+    }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -41,12 +48,38 @@ Player.prototype.update = function(dt) {
 
 };
 
+Player.prototype.handleInput = function(direct) {
+    switch(direct) {
+        case 'up':
+            if (this.y > 0) {
+                this.y -= 83;
+            };
+            break;
+        case 'down':
+            if (this.y < 400) {
+                this.y += 83;
+            };
+            break;
+        case 'left':
+            if (this.x > 100) {
+              this.x -= 101;
+            };
+            break;
+        case 'right':
+            if (this.x < 400) {
+                this.x += 101
+            };
+            break;
+    };
+};
+
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-const enemy1 = new Enemy(1);
-const enemy2 = new Enemy(2);
-const enemy3 = new Enemy(3);
+const enemy1 = new Enemy(1,1);
+const enemy2 = new Enemy(2,2);
+const enemy3 = new Enemy(3,3);
 
 const allEnemies = [enemy1, enemy2, enemy3];
 
@@ -64,3 +97,5 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+ctx.fillRect(0,0,4,5);
