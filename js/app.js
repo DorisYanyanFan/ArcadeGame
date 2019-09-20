@@ -1,15 +1,14 @@
 // Enemies our player must avoid
-var Enemy = function(row, type) {
+var Enemy = function(row, speed, startLine) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    this.x = -101;
+    this.x = startLine;
     this.y = (83 * row) - 20;
-    let speedArray = [180, 250, 300, 360];
-    this.speed = speedArray[type];
+    this.speed = speed;
 };
 
 // Update the enemy's position, required method for game
@@ -25,6 +24,7 @@ Enemy.prototype.update = function(dt) {
     }
 };
 
+
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -34,10 +34,13 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 
+
 var Player = function() {
     this.sprite = 'images/char-boy.png';
     this.x = 202;
     this.y = 322;
+    this.row = 4;
+    this.col = 3;
 };
 
 Player.prototype.render = function() {
@@ -45,7 +48,17 @@ Player.prototype.render = function() {
 };
 
 Player.prototype.update = function(dt) {
-
+    if (this.row >=1 && this.row < 4) {
+        let playerPosition = this.x;
+        const collide = function collide(enemy){
+            if(enemy.x > playerPosition - 90 && enemy.x < playerPosition + 80) {
+                console.log('this is player and I failed');    /*revised needed*/
+            }
+        };
+        for (let enemy of enemyArray[this.row-1]) {
+            collide.call(this, enemy);
+        }
+    }
 };
 
 Player.prototype.handleInput = function(direct) {
@@ -53,21 +66,25 @@ Player.prototype.handleInput = function(direct) {
         case 'up':
             if (this.y > 0) {
                 this.y -= 83;
+                this.row -= 1;
             };
             break;
         case 'down':
             if (this.y < 400) {
                 this.y += 83;
+                this.row += 1;
             };
             break;
         case 'left':
             if (this.x > 100) {
               this.x -= 101;
+              this.col -= 1;
             };
             break;
         case 'right':
             if (this.x < 400) {
-                this.x += 101
+                this.x += 101;
+                this.col += 1;
             };
             break;
     };
@@ -77,11 +94,32 @@ Player.prototype.handleInput = function(direct) {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-const enemy1 = new Enemy(1,1);
-const enemy2 = new Enemy(2,2);
-const enemy3 = new Enemy(3,3);
 
-const allEnemies = [enemy1, enemy2, enemy3];
+const enemyArray = [[],[],[]];
+const allEnemies = [];
+
+function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+    while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+    return array;
+}
+
+for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+        positionArray = [-101, -300, -800, -1000];
+        speedArray = [200, 300, 400];
+        position = shuffle(positionArray)[0];
+        speed = shuffle(speedArray)[0];
+        enemyArray[i][j] = new Enemy(i+1, speed, position);
+        allEnemies.push(enemyArray[i][j]);
+    }
+}
 
 const player = new Player();
 
@@ -94,8 +132,5 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
-
     player.handleInput(allowedKeys[e.keyCode]);
 });
-
-ctx.fillRect(0,0,4,5);
