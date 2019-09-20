@@ -95,8 +95,8 @@ Player.prototype.handleInput = function(direct) {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-const enemyArray = [[],[],[]];
-const allEnemies = [];
+let enemyArray = [[],[],[]];
+let allEnemies = [];
 
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -110,16 +110,26 @@ function shuffle(array) {
     return array;
 }
 
-for (let i = 0; i < 3; i++) {
-    for (let j = 0; j < 3; j++) {
-        positionArray = [-101, -300, -800, -1000];
-        speedArray = [200, 300, 400];
-        position = shuffle(positionArray)[0];
-        speed = shuffle(speedArray)[0];
-        enemyArray[i][j] = new Enemy(i+1, speed, position);
-        allEnemies.push(enemyArray[i][j]);
-    }
-}
+const createEnemy = function(){
+  for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+          positionArray = [-101, -300, -800, -1000];
+          speedArray = [200, 300, 400];
+          position = shuffle(positionArray)[0];
+          speed = shuffle(speedArray)[0];
+          enemyArray[i][j] = new Enemy(i+1, speed, position);
+          allEnemies.push(enemyArray[i][j]);
+      }
+  }
+};
+createEnemy();
+
+// function to delete all existing enemies
+const deleteEnemy = function(){
+    enemyArray = [[],[],[]];
+    allEnemies = [];
+};
+
 
 const player = new Player();
 
@@ -134,3 +144,48 @@ document.addEventListener('keyup', function(e) {
     };
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+// Create game status
+
+var game = {
+    status: "inactive"
+};
+
+if (game.status == "lose"){
+    deleteEnemy();
+}
+
+//EventListern StartGame
+ // createEnemy();
+ // window.requestAnimationFrame(drawResult);
+
+// Create a score panel
+var canvasScore = document.createElement('canvas'),
+    ctxScore = canvasScore.getContext('2d');
+
+canvasScore.width = 505;
+canvasScore.height = 140;
+document.body.appendChild(canvasScore);
+
+let start = 1569014290326; /*revised later*/
+let redraw = '';
+
+const drawResult = function () {
+    var now = Date.now();
+    let timer = (now - start)/1000;
+    ctx.clearRect(0,0,505,140);
+    ctxScore.fillStyle = 'lightblue';
+    ctxScore.fillRect(0,0,505,140);
+    ctxScore.font = "30pt Impact";
+    ctxScore.textAlign = "center";
+    ctxScore.fillStyle = "white";
+    ctxScore.fillText(`Time Left: ${timer} sec`, canvasScore.width/2, 40);
+
+    ctxScore.strokeStyle = "black";
+    ctxScore.lineWidth = 3;
+    ctxScore.strokeText(`Time Left: ${timer} sec`, canvasScore.width/2, 40);
+    redraw = requestAnimationFrame(drawResult);
+};
+
+redraw = requestAnimationFrame(drawResult);
+// cancelAnimationFrame(redraw);
