@@ -13,11 +13,13 @@ startButton.addEventListener('click',function(){
     // deleteEnemy();
 // }
 
-let lost = new Promise(function(resolve){
-    if (game.status == 'lost') {
-        resolve('noooooooo');
-    }
-});
-lost.then = (function(value){
-    console.log(value);
-});
+// let lost = new Promise(function(resolve){
+    // if (game.status == 'lost') {
+        // resolve('noooooooo');
+    // }
+// });
+// lost.then = (function(value){
+    // console.log(value);
+// });
+
+let canvas = document.querySelectorAll('canvas');

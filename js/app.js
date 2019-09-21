@@ -47,13 +47,19 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// Player is 60px wide, enemy is 100px wide
 Player.prototype.update = function(dt) {
     if (this.row >=1 && this.row < 4) {
         let playerPosition = this.x;
         const collide = function collide(enemy){
-            if(enemy.x > playerPosition - 90 && enemy.x < playerPosition + 80) {
+            if(enemy.x > playerPosition - 80 && enemy.x < playerPosition + 80) {
                 console.log('this is player and I failed');    /*revised needed*/
                 game.status = 'lost';
+                this.x = 202;
+                this.y = 322;
+                this.row = 4;
+                this.col = 3;
+
             }
         };
         for (let enemy of enemyArray[this.row-1]) {
@@ -89,13 +95,6 @@ Player.prototype.handleInput = function(direct) {
             };
             break;
     };
-};
-
-Player.prototype.fail = function(){
-  this.x = 202;
-  this.y = 322;
-  this.row = 4;
-  this.col = 3;
 };
 
 // Now instantiate your objects.
