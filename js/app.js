@@ -35,12 +35,12 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Player is 60px wide, enemy is 100px wide
+// Player is 50px wide, enemy is 100px wide
 Player.prototype.update = function(dt) {
     if (this.row >=1 && this.row < 4) {
         let playerPosition = this.x;
         const collide = function collide(enemy){
-            if(enemy.x > playerPosition - 80 && enemy.x < playerPosition + 80) {
+            if(enemy.x > playerPosition - 75 && enemy.x < playerPosition + 75) {
                 console.log('this is player and I failed');    /*revised needed*/
                 game.status = 'lost';
                 this.x = 202;  /*revised later*/
@@ -53,6 +53,9 @@ Player.prototype.update = function(dt) {
         for (let enemy of enemyArray[this.row-1]) {
             collide.call(this, enemy);
         }
+    };
+    if (this.row === 0) {
+        win();
     }
 };
 
@@ -87,22 +90,10 @@ Player.prototype.handleInput = function(direct) {
 
 // Create 9 enemies; 3 in each road. Each enemy's speed and start line will be randomly chosed.
 // Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+// function shuffle is declared at gem.js
 
 let enemyArray = [[],[],[]];
 let allEnemies = [];
-
-function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-    return array;
-}
 
 const createEnemy = function(){
   for (let i = 0; i < 3; i++) {
@@ -124,8 +115,11 @@ const deleteEnemy = function(){
 };
 
 
-const player = new Player();
+let player = new Player();
 
+const createPlayer = function(){
+    player = new Player();
+};
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
@@ -159,7 +153,7 @@ document.body.appendChild(canvasScore);
 
 
 let redraw,
-    timer;
+    timer = 30;
 
 const drawResult = function () {
     var now = Date.now();
@@ -174,6 +168,10 @@ const drawResult = function () {
     ctxScore.strokeStyle = "black";
     ctxScore.lineWidth = 3;
     ctxScore.strokeText(`Time Left: ${timer} sec`, canvasScore.width/2, 40);
+
+    // draw gem here
+
+
     redraw = requestAnimationFrame(drawResult);
        if (timer == 0) {
                lost();

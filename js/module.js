@@ -1,18 +1,23 @@
 // module to start the game
 const startButton = document.querySelector('#start');
 let startTime;
-startButton.addEventListener('click',function(){
-    let frontPage = document.querySelector('#frontPage');
-    frontPage.style.cssText = 'transform: translate(-9999px, -9999px)';
-    createEnemy();
-    startTime = Date.now();
-    game.status = 'active';
-    redraw = requestAnimationFrame(drawResult);
-});
 
-let lostPage = document.querySelector('#lostPage');
+const startGame = function(){
+  let frontPage = document.querySelector('#frontPage');
+  frontPage.style.cssText = 'transform: translate(-9999px, -9999px)';
+  createEnemy();
+  createPlayer();
+  startTime = Date.now();
+  game.status = 'active';
+  redraw = requestAnimationFrame(drawResult);
+};
 
-let lost = function(){
+startButton.addEventListener('click', startGame);
+
+// if the game is lost
+const lostPage = document.querySelector('#lostPage');
+
+const lost = function(){
     lostPage.style.cssText = 'transform: translate(-50%, -50%)';
     cancelAnimationFrame(redraw);
     deleteEnemy();
@@ -20,11 +25,22 @@ let lost = function(){
 
 const restartButton = document.querySelector('#restart');
 restartButton.addEventListener('click',function(){
-    let frontPage = document.querySelector('#frontPage');
-    frontPage.style.cssText = 'transform: translate(-9999px, -9999px)';
-    createEnemy();
-    startTime = Date.now();
-    game.status = 'active';
-    redraw = requestAnimationFrame(drawResult);
+    startGame();
     lostPage.style.cssText = 'transform: translate(-9999px, -9999px)';
+});
+
+
+// if the game is win
+const winPage = document.querySelector('#winPage');
+
+const win = function(){
+    winPage.style.cssText = 'transform: translate(-50%, -50%)';
+    cancelAnimationFrame(redraw);
+    deleteEnemy();
+};
+
+const restartWinButton = document.querySelector('#restartWin');
+restartWinButton.addEventListener('click',function(){
+    startGame();
+    winPage.style.cssText = 'transform: translate(-9999px, -9999px)';
 });

@@ -25,6 +25,11 @@ body {
 }
 
 #lostPage {
+    transition-property: transform;
+    transform: translate(-999px, -9999px);
+}
+
+#winPage {
   transition-property: transform;
   transform: translate(-999px, -9999px);
 }
