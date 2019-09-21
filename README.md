@@ -1,19 +1,43 @@
-# Classic Arcade Game Clone Project
+# Arcade Game Project
 
 ## Table of Contents
 
-- [Instructions](#instructions)
-- [Contributing](#contributing)
+- [How to Run]
+- [Game Rules]
+- [Functions]
+- [Files]
+- [Contributing]
 
-## Instructions
+## How to Run
 
-Use this [rubric](https://review.udacity.com/#!/rubrics/15/view) for self-checking your submission.
+Open the index.html and the game will be loaded. In the front page, use arrow keys or mouse to select the player you like and then click start. Use keys to move player.
 
-Make sure the functions you write are **object-oriented** - either class functions (like `Player` and `Enemy`) or class prototype functions such as `Enemy.prototype.checkCollisions`. Also make sure that the keyword `this` is used appropriately within your class and class prototype functions to refer to the object the function is called upon.
+## Game Rules
 
-Your **README.md** file should be updated with instructions on both how to 1. Run and 2. Play your arcade game.
+At the front page, select player and then start the game. To win this game, you need to cross the street within 30 seconds and collect gems. More gems collected, higher scores will be rewarded.  
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+In either these cases, you will lose this game:
+1. Come across a cockroach.
+2. Haven't across the street within 30 seconds.
+
+The performance will be evaluated according to the gems collected. Green gems will be rewarded
+
+- [Functions]
+1. Collide with cockroach.
+    In this game, the player is 60px wide while enemy is 100px wide. As long as the image of player is overlapping with that of an enemy, it will be considered that player collide with an enemy, and the game is lost.
+2. Scoring and Star
+    Scores is calculated based on the gems collected. Each gem worth 60 points. Specifically,
+    * 1 Star: 100 points or more;
+    * 2 Star: 160 points or more;
+    * 3 star: 200 points or more.
+3. Score Panel
+    A score panel will show up once game started. A timer count down will appear on the score panel.
+
+## Files
+1. Module.jss is added in the file.
+2. gem.jss is added in the file
+3. app.jss is updated
+4. html and css is updated to show the module and its effect.
 
 ## Contributing
 

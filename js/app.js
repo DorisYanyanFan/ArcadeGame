@@ -1,10 +1,5 @@
 // Enemies our player must avoid
 var Enemy = function(row, speed, startLine) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
     this.x = startLine;
     this.y = (83 * row) - 20;
@@ -14,9 +9,6 @@ var Enemy = function(row, speed, startLine) {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
     if (this.x < 800) {
         this.x = this.x + dt * this.speed;   /*this.x = dt * this.speed would end up with wiered animation, why?*/
     } else {
@@ -24,16 +16,12 @@ Enemy.prototype.update = function(dt) {
     }
 };
 
-
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
-
+// Player constructor
 
 var Player = function() {
     this.sprite = 'images/char-boy.png';
@@ -55,11 +43,11 @@ Player.prototype.update = function(dt) {
             if(enemy.x > playerPosition - 80 && enemy.x < playerPosition + 80) {
                 console.log('this is player and I failed');    /*revised needed*/
                 game.status = 'lost';
-                this.x = 202;
+                this.x = 202;  /*revised later*/
                 this.y = 322;
                 this.row = 4;
                 this.col = 3;
-
+                lost();
             }
         };
         for (let enemy of enemyArray[this.row-1]) {
@@ -97,7 +85,7 @@ Player.prototype.handleInput = function(direct) {
     };
 };
 
-// Now instantiate your objects.
+// Create 9 enemies; 3 in each road. Each enemy's speed and start line will be randomly chosed.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
@@ -169,24 +157,25 @@ canvasScore.width = 505;
 canvasScore.height = 140;
 document.body.appendChild(canvasScore);
 
-let redraw = '';
+
+let redraw,
+    timer;
 
 const drawResult = function () {
     var now = Date.now();
-    let timer = 30 - Math.floor((now - startTime)/1000);
-    ctx.clearRect(0,0,505,140);
+    timer = 30 - Math.floor((now - startTime)/1000);
+    ctxScore.clearRect(0,0,505,140);
     ctxScore.fillStyle = 'lightblue';
     ctxScore.fillRect(0,0,505,140);
     ctxScore.font = "30pt Impact";
     ctxScore.textAlign = "center";
     ctxScore.fillStyle = "white";
     ctxScore.fillText(`Time Left: ${timer} sec`, canvasScore.width/2, 40);
-
     ctxScore.strokeStyle = "black";
     ctxScore.lineWidth = 3;
     ctxScore.strokeText(`Time Left: ${timer} sec`, canvasScore.width/2, 40);
     redraw = requestAnimationFrame(drawResult);
+       if (timer == 0) {
+               lost();
+           };
 };
-
-redraw = requestAnimationFrame(drawResult);
-// cancelAnimationFrame(redraw);

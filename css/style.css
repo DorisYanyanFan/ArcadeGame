@@ -29,7 +29,7 @@ body {
   transform: translate(-999px, -9999px);
 }
 
-button#start {
+button {
     align-self: center;
     font-size: 1em;
     padding: 0.4em;

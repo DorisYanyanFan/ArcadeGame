@@ -7,19 +7,24 @@ startButton.addEventListener('click',function(){
     createEnemy();
     startTime = Date.now();
     game.status = 'active';
+    redraw = requestAnimationFrame(drawResult);
 });
 
-// if (game.status == "lose"){
-    // deleteEnemy();
-// }
+let lostPage = document.querySelector('#lostPage');
 
-// let lost = new Promise(function(resolve){
-    // if (game.status == 'lost') {
-        // resolve('noooooooo');
-    // }
-// });
-// lost.then = (function(value){
-    // console.log(value);
-// });
+let lost = function(){
+    lostPage.style.cssText = 'transform: translate(-50%, -50%)';
+    cancelAnimationFrame(redraw);
+    deleteEnemy();
+};
 
-let canvas = document.querySelectorAll('canvas');
+const restartButton = document.querySelector('#restart');
+restartButton.addEventListener('click',function(){
+    let frontPage = document.querySelector('#frontPage');
+    frontPage.style.cssText = 'transform: translate(-9999px, -9999px)';
+    createEnemy();
+    startTime = Date.now();
+    game.status = 'active';
+    redraw = requestAnimationFrame(drawResult);
+    lostPage.style.cssText = 'transform: translate(-9999px, -9999px)';
+});
