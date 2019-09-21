@@ -1,3 +1,42 @@
 body {
     text-align: center;
 }
+
+.modal {
+    background-color: rgba(112,128,144,0.9);
+    position: absolute;
+    z-index: 1;
+    width: 580px;
+    height: 80%;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#frontPage {
+    transition-property: transform;
+    transform: translate(-50%, -50%);
+}
+
+#lostPage {
+  transition-property: transform;
+  transform: translate(-999px, -9999px);
+}
+
+button#start {
+    align-self: center;
+    font-size: 1em;
+    padding: 0.4em;
+    padding-left: 1em;
+    padding-right: 1em;
+    border: 2px solid #312929;
+    border-radius: 10px;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: lightblue;
+    font-weight: bold;
+}

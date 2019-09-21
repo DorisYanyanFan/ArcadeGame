@@ -53,6 +53,7 @@ Player.prototype.update = function(dt) {
         const collide = function collide(enemy){
             if(enemy.x > playerPosition - 90 && enemy.x < playerPosition + 80) {
                 console.log('this is player and I failed');    /*revised needed*/
+                game.status = 'lost';
             }
         };
         for (let enemy of enemyArray[this.row-1]) {
@@ -90,6 +91,12 @@ Player.prototype.handleInput = function(direct) {
     };
 };
 
+Player.prototype.fail = function(){
+  this.x = 202;
+  this.y = 322;
+  this.row = 4;
+  this.col = 3;
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -122,7 +129,6 @@ const createEnemy = function(){
       }
   }
 };
-createEnemy();
 
 // function to delete all existing enemies
 const deleteEnemy = function(){
@@ -148,12 +154,9 @@ document.addEventListener('keyup', function(e) {
 // Create game status
 
 var game = {
-    status: "inactive"
+    status: "inactive",
 };
 
-if (game.status == "lose"){
-    deleteEnemy();
-}
 
 //EventListern StartGame
  // createEnemy();
@@ -167,12 +170,11 @@ canvasScore.width = 505;
 canvasScore.height = 140;
 document.body.appendChild(canvasScore);
 
-let start = 1569014290326; /*revised later*/
 let redraw = '';
 
 const drawResult = function () {
     var now = Date.now();
-    let timer = (now - start)/1000;
+    let timer = 30 - Math.floor((now - startTime)/1000);
     ctx.clearRect(0,0,505,140);
     ctxScore.fillStyle = 'lightblue';
     ctxScore.fillRect(0,0,505,140);
