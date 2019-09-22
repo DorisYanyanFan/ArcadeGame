@@ -37,19 +37,20 @@ Player.prototype.render = function() {
 
 // Player is 50px wide, enemy is 100px wide
 Player.prototype.update = function(dt) {
-    if (this.row >=1 && this.row < 4) {
-        let playerPosition = this.x;
-        const collide = function collide(enemy){
-            if(enemy.x > playerPosition - 75 && enemy.x < playerPosition + 75) {
-                console.log('this is player and I failed');    /*revised needed*/
-                game.status = 'lost';
-                this.x = 202;  /*revised later*/
-                this.y = 322;
-                this.row = 4;
-                this.col = 3;
-                lost();
-            }
+    let playerPosition = this.x;
+    const collide = function collide(enemy){
+        if(enemy.x > playerPosition - 80 && enemy.x < playerPosition + 80) {
+            console.log('this is player and I failed');    /*revised needed*/
+            game.status = 'lost';
+            this.x = 202;  /*revised later*/
+            this.y = 322;
+            this.row = 4;
+            this.col = 3;
+            lost();
+          }
         };
+
+    if (this.row >=1 && this.row < 4) {
         for (let enemy of enemyArray[this.row-1]) {
             collide.call(this, enemy);
         }
@@ -88,8 +89,7 @@ Player.prototype.handleInput = function(direct) {
     };
 };
 
-// Create 9 enemies; 3 in each road. Each enemy's speed and start line will be randomly chosed.
-// Place all enemy objects in an array called allEnemies
+// function createEnemy will create 9 enemies when called; 3 in each road. Each enemy's speed and start line will be randomly chosed.
 // function shuffle is declared at gem.js
 
 let enemyArray = [[],[],[]];
@@ -99,7 +99,7 @@ const createEnemy = function(){
   for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
           positionArray = [-101, -300, -800, -1000];
-          speedArray = [200, 300, 400];
+          speedArray = [200, 260, 300];
           position = shuffle(positionArray)[0];
           speed = shuffle(speedArray)[0];
           enemyArray[i][j] = new Enemy(i+1, speed, position);

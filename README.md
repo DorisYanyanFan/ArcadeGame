@@ -24,7 +24,7 @@ The performance will be evaluated according to the gems collected. Green gems wi
 
 ## [Functions]
 1. Collide with cockroach.
-    In this game, the player is 51px wide while enemy is 100px wide. As long as the image of player is overlapping with that of an enemy, it will be considered that player collide with an enemy, and the game is lost.
+    In this game, the player is 60px wide while enemy is 100px wide. As long as the image of player is overlapping with that of an enemy, it will be considered that player collide with an enemy, and the game is lost.
 2. Scoring and Star
     Scores is calculated based on the gems collected. Each gem worth 60 points. Specifically,
     * 1 Star: 100 points or more;

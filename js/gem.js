@@ -1,4 +1,4 @@
-// create an array allGems containing 6 gems in randomly order. the first 5 gems will appear in the game.
+
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
     while (currentIndex !== 0) {
@@ -11,37 +11,61 @@ function shuffle(array) {
     return array;
 }
 
-const useGems = [
-    'images/Gem Blue.png',
-    'images/Gem Blue.png',
-    'images/Gem Green.png',
-    'images/Gem Green.png',
-    'images/Gem Orange.png',
-    'images/Gem Orange.png'
-];
 
-const allGems = shuffle(useGems)[0];
+let Gem = function() {
 
+};
 
-let Gem = function(color, position) {
-    this.color = color;
-    this.x = 101;
-    this.y = 83;
-    this.sprite = 'images/Gem Blue.png';
+// create an array with 5 random gems.
+Gem.prototype.getColor = function() {
+    this.color = (function(){
+        const gems = ['blue','green','orange'];
+        shuffle(gems);
+        return gems[0];
+    // shuffle(gems).splice(5,1);
+    // return gems;
+    })();
+    if (this.color == 'blue'){
+        this.sprite = 'images/Gem Blue.png';
+    } else if (this.color == 'green') {
+        this.sprite = 'images/Gem Green.png';
+    } else if(this.color == 'orange') {
+        this.sprite = 'images/Gem Orange.png';
+    };
+};
+// create an array with 5 random positions. Each position is stored in an array [row, col]
+Gem.prototype.getPosition = function(){
+    const position = (function(){
+        let positionArray = [];
+        for (let i = 0; i <3; i++) {
+            for (let j=0; j<5; j++) {
+                 positionArray.push([i,j]);
+            }
+        };
+        shuffle(positionArray);
+        return positionArray[0];
+    })();
+    this.x = 14 + 125 * position[1];
+    this.y = 176 + 140 * position[0];
+};
+
+Gem.prototype.test = function(){
+    this.test = 'hi';
 };
 
 Gem.prototype.render = function() {
     ctx.save();
     ctx.scale(0.8,0.6);
-    ctx.drawImage(Resources.get(this.sprite), 516, 457);
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     ctx.restore();
 }
 
-let gem = new Gem('blue', 'init');
+let gem = new Gem();
+gem.getColor();
+gem.getPosition();
+// const createGems = function(time) {
+    // if (time === 27) {
+        // allGems.push();
+    // };
 
-const createGems = function(time) {
-    if (time === 27) {
-        allGems.push();
-    };
-
-};
+// };
