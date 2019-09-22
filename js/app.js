@@ -48,9 +48,8 @@ Player.prototype.goBack = function() {
 
 // Player is 50px wide, enemy is 100px wide
 Player.prototype.update = function(dt) {
-    let playerPosition = this.x;
     const collide = function collide(enemy){
-        if(enemy.x > playerPosition - 80 && enemy.x < playerPosition + 80) {
+        if(enemy.x > this.x - 80 && enemy.x < this.x + 80) {
             console.log('this is player and I failed');    /*revised needed*/
             game.status = 'lost';
             this.goBack();
