@@ -1,4 +1,9 @@
 // Enemies with random speed and random start line.
+let score = 0,
+    redraw,
+    startTime,
+    timer = 30;
+
 var Enemy = function(row) {
     this.sprite = 'images/enemy-bug.png';
     this.row = row;
@@ -52,18 +57,32 @@ Player.prototype.update = function(dt) {
         if(enemy.x > this.x - 80 && enemy.x < this.x + 80) {
             console.log('this is player and I failed');    /*revised needed*/
             game.status = 'lost';
-            this.goBack();
             lost();
           }
         };
 
+    const collect = function collect(gem) {
+        if (gem.row === this.row && gem.col === this.col) {
+            console.log('GEMgemgem');
+            score += 60;
+            gem.row = 99;
+            gem.col = 99;
+            gem.x = 999;
+            gem.y = 999;
+        }
+    };
+
     if (this.row >=1 && this.row < 4) {
+        for (let gem of allGems) {
+            collect.call(this, gem);
+        };
         for (let enemy of allEnemies) {
             if (enemy.row === this.row) {
                 collide.call(this, enemy);
             }
         }
     };
+
     if (this.row === 0) {
         win();
     }
@@ -155,10 +174,7 @@ canvasScore.height = 140;
 document.body.appendChild(canvasScore);
 
 
-let redraw,
-    timer = 30;
-
-const drawResult = function () {
+const drawPanel = function(){
     var now = Date.now();
     timer = 30 - Math.floor((now - startTime)/1000);
     ctxScore.clearRect(0,0,505,140);
@@ -166,11 +182,19 @@ const drawResult = function () {
     ctxScore.fillRect(0,0,505,140);
     ctxScore.font = "30pt Impact";
     ctxScore.textAlign = "center";
-    ctxScore.fillStyle = "white";
-    ctxScore.fillText(`Time Left: ${timer} sec`, canvasScore.width/2, 40);
-    ctxScore.strokeStyle = "black";
-    ctxScore.lineWidth = 3;
-    ctxScore.strokeText(`Time Left: ${timer} sec`, canvasScore.width/2, 40);
+    ctxScore.fillStyle = "SeaGreen";
+    ctxScore.fillText(`Time Left: ${timer?timer:30} sec`, canvasScore.width/2, 40);
+    ctxScore.fillStyle = "Black";
+    ctxScore.fillText(`Score: ${score?score: 0}  Stars:           `, canvasScore.width/2, 90);
+    ctxScore.strokeStyle = "Black";
+    ctxScore.lineWidth = 2;
+    ctxScore.strokeText(`Time Left: ${timer?timer:30} sec`, canvasScore.width/2, 40);
+};
+
+drawPanel();
+
+const drawResult = function () {
+    drawPanel();
     redraw = requestAnimationFrame(drawResult);
        if (timer == 0) {
                lost();

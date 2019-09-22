@@ -11,41 +11,30 @@ function shuffle(array) {
     return array;
 }
 
-
-let Gem = function() {};
-
 // Set gem's color randomly through shuffling a color array. Then according to gems' color, set image resource.
-Gem.prototype.getColor = function() {
-    this.color = (function(){
-        const gems = ['blue','green','orange'];
-        shuffle(gems);
-        return gems[0];
-    })();
-    if (this.color == 'blue'){
-        this.sprite = 'images/Gem Blue.png';
-    } else if (this.color == 'green') {
-        this.sprite = 'images/Gem Green.png';
-    } else if(this.color == 'orange') {
-        this.sprite = 'images/Gem Orange.png';
-    };
-};
-
-// Select a random position on the road, the selected position is stored in an array [col, row].
-// Set the position according to the seleced postion.
-Gem.prototype.getPosition = function(){
-    const position = (function(){
+let Gem = function() {
+    this.row = 99;
+    this.col = 99;
+    this.colorArray = ['Blue','Green','Orange'];
+    this.color = shuffle(this.colorArray)[0];
+    this.sprite = `images/Gem ${this.color}.png`;
+    // Select a random position by shuflling all the avaiable positions, and select the first postion as gem's position. The gem position is stored in positionArray[0].
+    // Set this.x; this.y according to the gem postion.
+    this.positionArray = (function(){
         let positionArray = [];
         for (let i = 0; i <3; i++) {
             for (let j=0; j<5; j++) {
                  positionArray.push([i,j]);
             }
         };
-        shuffle(positionArray);
-        return positionArray[0];
+        return shuffle(positionArray);
     })();
-    this.x = 14 + 125 * position[1];
-    this.y = 176 + 140 * position[0];
+    this.row = this.positionArray[0][0] + 1;
+    this.col = this.positionArray[0][1] + 1;
+    this.x = 14 + 125 * this.positionArray[0][1];
+    this.y = 176 + 140 * this.positionArray[0][0];
 };
+
 
 // Scale the gem picture to make it smaller.
 Gem.prototype.render = function() {
@@ -55,21 +44,21 @@ Gem.prototype.render = function() {
     ctx.restore();
 }
 
+// create 5 gems with random color and random places, store them in an array called fiveGems.
 
 let allGems = [];
-
-// create 5 gems with random color and random places, store them in an array called fiveGems.
-// draw them after game start
 const drawGems = function() {
     const fiveGems = [];
     for(let i=0; i<5; i++) {
-        (function(){ //
-            let gem = new Gem();
-            gem.getColor();
-            gem.getPosition();
-            fiveGems.push(gem);
-        })();
-    }
+        let gem = new Gem();
+        //Make sure nearest two gems doesn't show up in the same position.
+        if (i>0 && gem.row === fiveGems[i-1].row && gem.col === fiveGems[i-1].col) {
+            i = i-1;
+            continue;
+        };
+        fiveGems.push(gem);
+    };
+// draw them after 2 seconds, 7 seconds, 12 seconds, 17 seconds and 24 seconds.
     timeout28 = window.setTimeout(function(){allGems.push(fiveGems[0])}, 2000);
     timeout23 = window.setTimeout(function(){allGems.push(fiveGems[1])}, 7000);
     timeout20 = window.setTimeout(function(){allGems.splice(0,1)}, 10000);
@@ -93,5 +82,5 @@ const clearGems = function() {
     clearTimeout(timeout10);
     clearTimeout(timeout6);
     clearTimeout(timeout1);
-    clearTimeout(timeout0);
+    clearTimeout(timeout0)
 }

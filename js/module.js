@@ -1,6 +1,6 @@
 // module to start the game
 const startButton = document.querySelector('#start');
-let startTime;
+
 
 const startGame = function(){
   let frontPage = document.querySelector('#frontPage');
@@ -22,7 +22,8 @@ const lost = function(){
     lostPage.style.cssText = 'transform: translate(-50%, -50%)';
     cancelAnimationFrame(redraw);
     deleteEnemy();
-    clearGems()
+    clearGems();
+    player.goBack()
 };
 
 const restartButton = document.querySelector('#restart');
@@ -39,7 +40,8 @@ const win = function(){
     winPage.style.cssText = 'transform: translate(-50%, -50%)';
     cancelAnimationFrame(redraw);
     deleteEnemy();
-    clearGems()
+    clearGems();
+    player.goBack()
 };
 
 const restartWinButton = document.querySelector('#restartWin');
