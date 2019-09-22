@@ -22,6 +22,7 @@ const lost = function(){
     lostPage.style.cssText = 'transform: translate(-50%, -50%)';
     cancelAnimationFrame(redraw);
     deleteEnemy();
+    clearGems()
 };
 
 const restartButton = document.querySelector('#restart');
@@ -38,6 +39,7 @@ const win = function(){
     winPage.style.cssText = 'transform: translate(-50%, -50%)';
     cancelAnimationFrame(redraw);
     deleteEnemy();
+    clearGems()
 };
 
 const restartWinButton = document.querySelector('#restartWin');

@@ -56,20 +56,20 @@ Gem.prototype.render = function() {
 }
 
 
-// create 5 gems with random color and random places, store them in an array called fiveGems.
-const fiveGems = [];
-for(let i=0; i<5; i++) {
-    (function(){ //
-        let gem = new Gem();
-        gem.getColor();
-        gem.getPosition();
-        fiveGems.push(gem);
-    })();
-}
-
 let allGems = [];
 
+// create 5 gems with random color and random places, store them in an array called fiveGems.
+// draw them after game start
 const drawGems = function() {
+    const fiveGems = [];
+    for(let i=0; i<5; i++) {
+        (function(){ //
+            let gem = new Gem();
+            gem.getColor();
+            gem.getPosition();
+            fiveGems.push(gem);
+        })();
+    }
     timeout28 = window.setTimeout(function(){allGems.push(fiveGems[0])}, 2000);
     timeout23 = window.setTimeout(function(){allGems.push(fiveGems[1])}, 7000);
     timeout20 = window.setTimeout(function(){allGems.splice(0,1)}, 10000);
@@ -81,3 +81,17 @@ const drawGems = function() {
     timeout1 = window.setTimeout(function(){allGems.splice(0,1)}, 29000);
     timeout0 = window.setTimeout(function(){allGems.splice(0,1)}, 30000);
 };
+
+const clearGems = function() {
+    allGems = [];
+    clearTimeout(timeout28);
+    clearTimeout(timeout23);
+    clearTimeout(timeout20);
+    clearTimeout(timeout18);
+    clearTimeout(timeout16);
+    clearTimeout(timeout13);
+    clearTimeout(timeout10);
+    clearTimeout(timeout6);
+    clearTimeout(timeout1);
+    clearTimeout(timeout0);
+}
