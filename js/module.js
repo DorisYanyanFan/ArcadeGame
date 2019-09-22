@@ -10,6 +10,7 @@ const startGame = function(){
   startTime = Date.now();
   game.status = 'active';
   redraw = requestAnimationFrame(drawResult);
+  drawGems();
 };
 
 startButton.addEventListener('click', startGame);

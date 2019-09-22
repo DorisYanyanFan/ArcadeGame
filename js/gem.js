@@ -12,18 +12,14 @@ function shuffle(array) {
 }
 
 
-let Gem = function() {
+let Gem = function() {};
 
-};
-
-// create an array with 5 random gems.
+// Set gem's color randomly through shuffling a color array. Then according to gems' color, set image resource.
 Gem.prototype.getColor = function() {
     this.color = (function(){
         const gems = ['blue','green','orange'];
         shuffle(gems);
         return gems[0];
-    // shuffle(gems).splice(5,1);
-    // return gems;
     })();
     if (this.color == 'blue'){
         this.sprite = 'images/Gem Blue.png';
@@ -33,7 +29,9 @@ Gem.prototype.getColor = function() {
         this.sprite = 'images/Gem Orange.png';
     };
 };
-// create an array with 5 random positions. Each position is stored in an array [row, col]
+
+// Select a random position on the road, the selected position is stored in an array [col, row].
+// Set the position according to the seleced postion.
 Gem.prototype.getPosition = function(){
     const position = (function(){
         let positionArray = [];
@@ -49,10 +47,7 @@ Gem.prototype.getPosition = function(){
     this.y = 176 + 140 * position[0];
 };
 
-Gem.prototype.test = function(){
-    this.test = 'hi';
-};
-
+// Scale the gem picture to make it smaller.
 Gem.prototype.render = function() {
     ctx.save();
     ctx.scale(0.8,0.6);
@@ -60,12 +55,29 @@ Gem.prototype.render = function() {
     ctx.restore();
 }
 
-let gem = new Gem();
-gem.getColor();
-gem.getPosition();
-// const createGems = function(time) {
-    // if (time === 27) {
-        // allGems.push();
-    // };
 
-// };
+// create 5 gems with random color and random places, store them in an array called fiveGems.
+const fiveGems = [];
+for(let i=0; i<5; i++) {
+    (function(){ //
+        let gem = new Gem();
+        gem.getColor();
+        gem.getPosition();
+        fiveGems.push(gem);
+    })();
+}
+
+let allGems = [];
+
+const drawGems = function() {
+    timeout28 = window.setTimeout(function(){allGems.push(fiveGems[0])}, 2000);
+    timeout23 = window.setTimeout(function(){allGems.push(fiveGems[1])}, 7000);
+    timeout20 = window.setTimeout(function(){allGems.splice(0,1)}, 10000);
+    timeout18 = window.setTimeout(function(){allGems.push(fiveGems[2])}, 12000);
+    timeout16 = window.setTimeout(function(){allGems.splice(0,1)}, 14000);
+    timeout13 = window.setTimeout(function(){allGems.push(fiveGems[3])}, 17000);
+    timeout10 = window.setTimeout(function(){allGems.splice(0,1)}, 20000);
+    timeout6 = window.setTimeout(function(){allGems.push(fiveGems[4])}, 24000);
+    timeout1 = window.setTimeout(function(){allGems.splice(0,1)}, 29000);
+    timeout0 = window.setTimeout(function(){allGems.splice(0,1)}, 30000);
+};

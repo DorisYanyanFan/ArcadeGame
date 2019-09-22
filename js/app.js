@@ -168,10 +168,6 @@ const drawResult = function () {
     ctxScore.strokeStyle = "black";
     ctxScore.lineWidth = 3;
     ctxScore.strokeText(`Time Left: ${timer} sec`, canvasScore.width/2, 40);
-
-    // draw gem here
-
-
     redraw = requestAnimationFrame(drawResult);
        if (timer == 0) {
                lost();
