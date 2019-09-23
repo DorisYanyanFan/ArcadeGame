@@ -46,7 +46,8 @@ button {
     border-radius: 10px;
 }
 
-button:hover {
+button:hover,
+:focus {
     cursor: pointer;
     background-color: lightblue;
     font-weight: bold;

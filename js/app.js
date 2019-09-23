@@ -2,15 +2,16 @@
 let score = 0,
     redraw,
     startTime,
-    timer = 30,
+    timer,
     allGems = [],
-    allChar;
+    allChar = [];
 
 // Create game status
 var game = {
         status: 'inactive',
         reasonArray: ['You are eaten by a cockroach', 'Time Up'],
         character: 'boy',
+        endTime: 30,
         get lostReason0() {
             document.querySelector('#reason').textContent = game.reasonArray[0];
         },
@@ -66,14 +67,13 @@ Player.prototype.goBack = function() {
     this.col = 3;
 };
 
-// Player is 50px wide, enemy is 100px wide
+// Player is 60px wide, enemy is 100px wide
 Player.prototype.update = function(dt) {
     const collide = function collide(enemy){
         if(enemy.x > this.x - 80 && enemy.x < this.x + 80) {
             console.log('this is player and I failed');    /*revised needed*/
-            game.status = 'lost',
             game.lostReason0;
-            lost();
+            openLostModal();
           }
         };
 
@@ -100,8 +100,7 @@ Player.prototype.update = function(dt) {
     };
 
     if (this.row === 0) {
-        game.status = 'win';
-        win();
+        openWinModal();
     }
 };
 
@@ -172,3 +171,31 @@ document.addEventListener('keyup', function(e) {
     };
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+// draw a score panel to show the performance
+const scorePanel = {};
+
+scorePanel.render = function(){
+    var now = Date.now();
+    timer = 30 - Math.floor((now - startTime)/1000);
+    ctx.fillStyle = 'lightblue';
+    ctx.fillRect(0,620,505,135);
+    ctx.font = "30pt Impact";
+    ctx.textAlign = "center";
+    ctx.fillStyle = "SeaGreen";
+    ctx.fillText(`Time Left: ${game.status == 'active'? timer : game.endTime} sec`, 505/2, 665);
+    ctx.fillStyle = "Teal";
+    ctx.fillText(`Score: ${score?score: 0}    Stars:               `, 505/2, 725);
+    ctx.strokeStyle = "Black";
+    ctx.lineWidth = 2;
+    ctx.strokeText(`Time Left: ${game.status == 'active'? timer : game.endTime} sec`, 505/2, 665);
+    if (timer == 0 && game.status == 'avtive') {
+        game.lostReason1;
+        openLostModal();
+    };
+
+    ctx.save();
+    ctx.scale(0.6,0.6);
+    ctx.drawImage(Resources.get('images/Star.png'), 580, 1080);
+    ctx.restore();
+};

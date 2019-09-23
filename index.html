@@ -16,25 +16,25 @@
             Watch out those giant, giant cockroaches, they are hungry.
         </p>
         <canvas id='selector'></canvas>
-        <button id="start"> Start! </button>
+        <button id="start" tabindex = "0"> Start! </button>
     </div>
 <!-- The model if fail -->
     <div id="lostPage" class="modal">
         <h2> Whoops </h2>
         <h3 id="reason"> Something happend </h3>
-        <button id="restart"> Play Again! </button>
+        <button id="restart" tabindex="-1"> Play Again! </button>
     </div>
 <!-- The model if win -->
         <div id="winPage" class="modal">
             <h2> Congrats </h2>
             <h3> Star Pic </h3>
-            <button id="restartWin"> Play Again! </button>
+            <button id="restartWin" tabindex="-1"> Play Again! </button>
         </div>
 
     <script src="js/resources.js"></script>
     <script src="js/app.js"></script>
     <script src="js/engine.js"></script>
     <script src="js/gem.js"></script>
-    <script src="js/module.js"></script>
+    <script src="js/modals.js"></script>
 </body>
 </html>

@@ -1,63 +1,14 @@
 
-// Create a score panel
-var canvasScore = document.createElement('canvas'),
-    ctxScore = canvasScore.getContext('2d');
+// This part is about the front page modal.
 
-canvasScore.width = 505;
-canvasScore.height = 140;
-
-
-const drawPanel = function(){
-    var now = Date.now();
-    timer = 30 - Math.floor((now - startTime)/1000);
-    ctxScore.clearRect(0,0,505,140);
-    ctxScore.fillStyle = 'lightblue';
-    ctxScore.fillRect(0,0,505,140);
-    ctxScore.font = "30pt Impact";
-    ctxScore.textAlign = "center";
-    ctxScore.fillStyle = "SeaGreen";
-    ctxScore.fillText(`Time Left: ${timer?timer:30} sec`, canvasScore.width/2, 40);
-    ctxScore.fillStyle = "Black";
-    ctxScore.fillText(`Score: ${score?score: 0}  Stars:           `, canvasScore.width/2, 90);
-    ctxScore.strokeStyle = "Black";
-    ctxScore.lineWidth = 2;
-    ctxScore.strokeText(`Time Left: ${timer?timer:30} sec`, canvasScore.width/2, 40);
-};
-
-drawPanel();
-
-const drawResult = function () {
-    drawPanel();
-    redraw = requestAnimationFrame(drawResult);
-       if (timer == 0) {
-            game.status = 'lost';
-            game.lostReason1;
-            lost();
-           };
-};
-
-let Star = function (){};
-
-Star.prototype.render = function() {
-    ctxScore.drawImage(Resources.get('images/Star.png'), 400, -300);
-};
-
-let star = new Star();
-
-
-
-// append the score panel to the document. I append the score panel in this file to makesure the score panel is following the main canvas generated in engine.js.
-document.body.appendChild(canvasScore);
-
-
-
-//Select the player
+// Draw a canvas that allow to select player
 const selector = document.querySelector('#selector'),
     ctxSelector = selector.getContext('2d');
 
 selector.width = 580;
 selector.height = 200;
 
+// Set characters availale to choose
 const Char = function (col) {
         this.x = 66 + (col - 1) * 180;
         this.y = -30;
@@ -73,7 +24,7 @@ Char.prototype.render = function (){
     ctxSelector.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-
+//panel is the selector png. it can move left and right to show which character is currently select.
 let panel = {
     col: 2,
     x: 246,
@@ -85,6 +36,7 @@ let panel = {
     }
 };
 
+// ceate the character instances and put them together with panel in an array. enjine.js will draw allChar.
 allChar = [panel, new Char(1), new Char(2), new Char(3)];
 
 panel.handleInput = function(direct) {
@@ -121,6 +73,7 @@ panel.handleInput = function(direct) {
 
 // module to start the game
 const startButton = document.querySelector('#start');
+    startButton.tabIndex = 0;
 const frontPage = document.querySelector('#frontPage');
 
 const initGame = function(){
@@ -129,13 +82,15 @@ const initGame = function(){
   score = 0;
   startTime = Date.now();
   game.status = 'active';
-  redraw = requestAnimationFrame(drawResult);
   drawGems();
 };
 
 const clearFrontPage = function() {
     frontPage.style.cssText = 'transform: translate(-9999px, -9999px)';
-    selector.clearRect(0,0,580,200);
+    ctxSelector.clearRect(0,0,580,200);
+    start.tabIndex = -1;
+    restartButton.tabIndex = -1;
+    restartWinButton.tabIndex = -1;
 };
 
 startButton.addEventListener('click', function(){
@@ -151,6 +106,65 @@ document.addEventListener('keyup', function(e) {
     panel.handleInput(allowedKeys[e.keyCode]);
 });
 
+
+// This is about the lost modal and the restart button in that modal
+const lostPage = document.querySelector('#lostPage');
+const restartButton = document.querySelector('#restart');
+
+const openLostModal = function(){
+    lostPage.style.cssText = 'transform: translate(-50%, 0)';
+    deleteEnemy();
+    clearGems();
+    player.goBack();
+    game.status = 'lost';
+    game.endTime = timer;
+    start.tabIndex = -1;
+    restartButton.tabIndex = 0;
+    restartWinButton.tabIndex = -1;
+};
+
+const closeLostModal = function(){
+    lostPage.style.cssText = 'transform: translate(-9999px, -9999px)';
+    start.tabIndex = -1;
+    restartButton.tabIndex = -1;
+    restartWinButton.tabIndex = -1
+};
+
+restartButton.addEventListener('click',function(){
+    initGame();
+    closeLostModal();
+});
+
+
+// This is about the win modal and its button funciton
+const winPage = document.querySelector('#winPage');
+const restartWinButton = document.querySelector('#restartWin');
+
+const openWinModal = function(){
+    winPage.style.cssText = 'transform: translate(-50%, 0)';
+    deleteEnemy();
+    clearGems();
+    player.goBack();
+    game.status = 'win';
+    game.endTime = timer;
+    start.tabIndex = -1;
+    restartButton.tabIndex = -1;
+    restartWinButton.tabIndex = 0;
+};
+
+const closeWinModal = function(){
+    winPage.style.cssText = 'transform: translate(-9999px, -9999px)';
+    start.tabIndex = -1;
+    restartButton.tabIndex = -1;
+    restartWinButton.tabIndex = -1
+};
+
+restartWinButton.addEventListener('click',function(){
+    initGame();
+    closeWinModal();
+});
+
+// This is the function when 'enter' is pressed.
 document.addEventListener('keyup', function(event) {
     if (event.keyCode === 13){
         switch (game.status) {
@@ -160,47 +174,12 @@ document.addEventListener('keyup', function(event) {
                 break;
             case 'lost':
                 initGame();
-                lostPage.style.cssText = 'transform: translate(-9999px, -9999px)';
+                closeLostModal();
                 break;
             case 'win':
                 initGame();
-                winPage.style.cssText = 'transform: translate(-9999px, -9999px)';
+                closeWinModal();
                 break;
         }
     }
-});
-
-// if the game is lost
-const lostPage = document.querySelector('#lostPage');
-
-const lost = function(){
-    lostPage.style.cssText = 'transform: translate(-50%, 0)';
-    cancelAnimationFrame(redraw);
-    deleteEnemy();
-    clearGems();
-    player.goBack()
-};
-
-const restartButton = document.querySelector('#restart');
-restartButton.addEventListener('click',function(){
-    initGame();
-    lostPage.style.cssText = 'transform: translate(-9999px, -9999px)';
-});
-
-
-// if the game is win
-const winPage = document.querySelector('#winPage');
-
-const win = function(){
-    winPage.style.cssText = 'transform: translate(-50%, 0)';
-    cancelAnimationFrame(redraw);
-    deleteEnemy();
-    clearGems();
-    player.goBack()
-};
-
-const restartWinButton = document.querySelector('#restartWin');
-restartWinButton.addEventListener('click',function(){
-    initGame();
-    winPage.style.cssText = 'transform: translate(-9999px, -9999px)';
 });
