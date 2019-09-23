@@ -2,7 +2,22 @@
 let score = 0,
     redraw,
     startTime,
-    timer = 30;
+    timer = 30,
+    allGems = [],
+    allChar;
+
+// Create game status
+var game = {
+        status: 'inactive',
+        reasonArray: ['You are eaten by a cockroach', 'Time Up'],
+        character: 'boy',
+        get lostReason0() {
+            document.querySelector('#reason').textContent = game.reasonArray[0];
+        },
+        get lostReason1() {
+            document.querySelector('#reason').textContent = game.reasonArray[1];
+        }
+    };
 
 var Enemy = function(row) {
     this.sprite = 'images/enemy-bug.png';
@@ -33,7 +48,7 @@ Enemy.prototype.render = function() {
 
 // Player constructor
 var Player = function() {
-    this.sprite = 'images/char-boy.png';
+    this.sprite = `images/char-${game.character}.png`;
     this.x = 202;
     this.y = 322;
     this.row = 4;
@@ -56,7 +71,8 @@ Player.prototype.update = function(dt) {
     const collide = function collide(enemy){
         if(enemy.x > this.x - 80 && enemy.x < this.x + 80) {
             console.log('this is player and I failed');    /*revised needed*/
-            game.status = 'lost';
+            game.status = 'lost',
+            game.lostReason0;
             lost();
           }
         };
@@ -84,11 +100,15 @@ Player.prototype.update = function(dt) {
     };
 
     if (this.row === 0) {
+        game.status = 'win';
         win();
     }
 };
 
 Player.prototype.handleInput = function(direct) {
+    if (game.status !== 'active') {
+        return;
+    };
     switch(direct) {
         case 'up':
             if (this.y > 0) {
@@ -136,7 +156,6 @@ const deleteEnemy = function(){
     allEnemies = [];
 };
 
-
 let player = new Player();
 
 const createPlayer = function(){
@@ -153,50 +172,3 @@ document.addEventListener('keyup', function(e) {
     };
     player.handleInput(allowedKeys[e.keyCode]);
 });
-
-// Create game status
-
-var game = {
-    status: "inactive",
-};
-
-
-//EventListern StartGame
- // createEnemy();
- // window.requestAnimationFrame(drawResult);
-
-// Create a score panel
-var canvasScore = document.createElement('canvas'),
-    ctxScore = canvasScore.getContext('2d');
-
-canvasScore.width = 505;
-canvasScore.height = 140;
-document.body.appendChild(canvasScore);
-
-
-const drawPanel = function(){
-    var now = Date.now();
-    timer = 30 - Math.floor((now - startTime)/1000);
-    ctxScore.clearRect(0,0,505,140);
-    ctxScore.fillStyle = 'lightblue';
-    ctxScore.fillRect(0,0,505,140);
-    ctxScore.font = "30pt Impact";
-    ctxScore.textAlign = "center";
-    ctxScore.fillStyle = "SeaGreen";
-    ctxScore.fillText(`Time Left: ${timer?timer:30} sec`, canvasScore.width/2, 40);
-    ctxScore.fillStyle = "Black";
-    ctxScore.fillText(`Score: ${score?score: 0}  Stars:           `, canvasScore.width/2, 90);
-    ctxScore.strokeStyle = "Black";
-    ctxScore.lineWidth = 2;
-    ctxScore.strokeText(`Time Left: ${timer?timer:30} sec`, canvasScore.width/2, 40);
-};
-
-drawPanel();
-
-const drawResult = function () {
-    drawPanel();
-    redraw = requestAnimationFrame(drawResult);
-       if (timer == 0) {
-               lost();
-           };
-};

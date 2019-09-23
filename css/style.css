@@ -7,12 +7,14 @@ body {
 }
 
 .modal {
+    border: 2px solid black;
+    border-radius: 10px;
     background-color: rgba(112,128,144,0.9);
     position: absolute;
     z-index: 1;
     width: 580px;
-    height: 80%;
-    top: 50%;
+    height: 760px;
+    top: 30px;
     left: 50%;
     display: flex;
     justify-content: center;
@@ -21,7 +23,7 @@ body {
 
 #frontPage {
     transition-property: transform;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0);
 }
 
 #lostPage {

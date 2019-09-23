@@ -8,14 +8,20 @@
 <body>
 <!-- The modal showing the game result. -->
     <div id="frontPage" class="modal">
-        <h2> Collect Gems in 30s </h2>
-        <p> In 30 secondes, cross the road and collect the gems!</p>
+        <h3> Collect Gems and Sail</h3>
+        <p class = "notes"> Cross the road and sail out! Gems are randomly shown on the road, don't leave them behind.</p>
+        <p class = "notes"> But you have only 30 seconds, if you didn't sail within 30 seconds, you lost the only chance.
+        </p>
+        <p class = "notes">
+            Watch out those giant, giant cockroaches, they are hungry.
+        </p>
+        <canvas id='selector'></canvas>
         <button id="start"> Start! </button>
     </div>
 <!-- The model if fail -->
     <div id="lostPage" class="modal">
         <h2> Whoops </h2>
-        <h3> You are beaten by a cockcroach </h3>
+        <h3 id="reason"> Something happend </h3>
         <button id="restart"> Play Again! </button>
     </div>
 <!-- The model if win -->
@@ -26,8 +32,8 @@
         </div>
 
     <script src="js/resources.js"></script>
-    <script src="js/engine.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/engine.js"></script>
     <script src="js/gem.js"></script>
     <script src="js/module.js"></script>
 </body>

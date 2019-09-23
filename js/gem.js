@@ -46,7 +46,6 @@ Gem.prototype.render = function() {
 
 // create 5 gems with random color and random places, store them in an array called fiveGems.
 
-let allGems = [];
 const drawGems = function() {
     const fiveGems = [];
     for(let i=0; i<5; i++) {
