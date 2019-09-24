@@ -1,13 +1,26 @@
-// Enemies with random speed and random start line.
+/* declare global variables here.
+* score: the score rewarded in one game.
+* starsNum: the number of stars rewarded in one game.
+* startTime: tracks the time of game started.
+* timer: a count down timer, which starts from 30 sec to 0 sec.
+* player: the player object in game. will be draw on canvas through engine.js.
+* allGems[]: stores the gem need to be draw in engine.js.
+* allChar[]: stores all characters can be selected and a selector panel at the front page, will be draw through engine.js.
+* allEnemies[]: stores the enemy in the game, will be draw in engine.js
+* scorePanel{}: scorePanel object, had render method. It will be draw below main canvas through enjine.js
+*/
+
 let score = 0,
     starsNum = 0,
-    redraw,
     startTime,
     timer,
+    player,
     allGems = [],
-    allChar = [];
+    allChar = [],
+    allEnemies = [],
+    scorePanel = {};
 
-// Create game status
+// Create game object, will track down the game status
 var game = {
         status: 'inactive',
         reasonArray: ['You are eaten by a cockroach', 'Time Up'],
@@ -21,6 +34,9 @@ var game = {
         }
     };
 
+
+// Enemy constructor. It will instantiate enemy object with random speed, random startLine.
+// row is the row number of road. From top down, roads are recorded as row = 1; row = 2, row = 3.
 var Enemy = function(row) {
     this.sprite = 'images/enemy-bug.png';
     this.row = row;
@@ -32,7 +48,7 @@ var Enemy = function(row) {
 };
 
 
-// Update enemy postion. When an enemy reaches end of the road, reshuffle its speed and startline.
+// Update enemy postion. When an enemy reaches certain place, reshuffle its speed and startline.
 Enemy.prototype.update = function(dt) {
     if (this.x < 800) {
         this.x = this.x + dt * this.speed;   /*this.x = dt * this.speed would end up with wiered animation, why?*/
@@ -42,13 +58,13 @@ Enemy.prototype.update = function(dt) {
     }
 };
 
-// Draw the enemy on the screen, required method for game
+// Draw the enemy on the screen.
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 
-// Player constructor
+// Player constructor.
 var Player = function() {
     this.sprite = `images/char-${game.character}.png`;
     this.x = 202;
@@ -57,10 +73,12 @@ var Player = function() {
     this.col = 3;
 };
 
+// Draw player
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// Let player go back to the starting postion when game ended.
 Player.prototype.goBack = function() {
     this.x = 202;
     this.y = 322;
@@ -68,8 +86,7 @@ Player.prototype.goBack = function() {
     this.col = 3;
 };
 
-
-
+// Function to update game status. If player collide an enemy, the game is lost; if player touches a gem, score is added and that gem disapper; if player reach the river, the game is won.
 Player.prototype.update = function(dt) {
     // function about eneny and player collide each oterh. Player is 60px wide, enemy is 100px wide; considering collide each other when 80px away.
     const collide = function collide(enemy){
@@ -80,7 +97,7 @@ Player.prototype.update = function(dt) {
           }
         };
 
-    //function abouot collect gems and calculate score
+    //function abouot collect gems and calculate score. Green gem worth 60 points, blue 80, orange 100.
     const collect = function collect(gem) {
         if (gem.row === this.row && gem.col === this.col) {
             console.log('GEMgemgem');
@@ -108,12 +125,14 @@ Player.prototype.update = function(dt) {
             }
         }
     };
-    // the game is win when player go to row 0
+    // if player reaches river, the game is win.
     if (this.row === 0) {
         openWinModal();
     }
 };
 
+
+// let player move inside the canvas.
 Player.prototype.handleInput = function(direct) {
     if (game.status !== 'active') {
         return;
@@ -146,10 +165,7 @@ Player.prototype.handleInput = function(direct) {
     };
 };
 
-// function createEnemy will create 9 enemies when it is called; 3 enemy in each road. Each enemy's speed and start line will be randomly chosed.
-// function shuffle is declared at gem.js
-
-let allEnemies = [];
+// function createEnemy will create 9 enemies when game started; 3 enemy in each road. Push all enemies in allEnemies[]
 
 const createEnemy = function(){
     for (let i = 0; i < 3; i++){
@@ -160,21 +176,19 @@ const createEnemy = function(){
     }
 };
 
-// function to delete all existing enemies
+// function to stop draw enemies when game ended
 const deleteEnemy = function(){
     allEnemies = [];
 };
 
-let player = new Player();
-
+// function to instantiate player.
 const createPlayer = function(){
     player = new Player();
 };
+player = new Player();
 
 
 // draw a score panel to show the performance
-const scorePanel = {};
-
 scorePanel.render = function(){
     var now = Date.now();
     timer = 30 - Math.floor((now - startTime)/1000);

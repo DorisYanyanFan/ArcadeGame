@@ -8,7 +8,7 @@ const selector = document.querySelector('#selector'),
 selector.width = 580;
 selector.height = 200;
 
-// Set characters availale to choose
+// Char constructor. set characters availale to choose
 const Char = function (col) {
         this.x = 66 + (col - 1) * 180;
         this.y = -30;
@@ -36,9 +36,12 @@ let panel = {
     }
 };
 
-// ceate the character instances and put them together with panel in an array. enjine.js will draw allChar.
+// First ceate the character instances and put them together with panel in an array allChar[]
+//allChar[] is declared at app.js.  enjine.js will draw all objects in allChar[] through render method
 allChar = [panel, new Char(1), new Char(2), new Char(3)];
 
+
+// function to allow player move panel left and right to choose character.
 panel.handleInput = function(direct) {
     if (game.status !== 'inactive') {
         return;
@@ -71,12 +74,13 @@ panel.handleInput = function(direct) {
 };
 
 
-// module to start the game
+// modals in the front page
 const startButton = document.querySelector('#start');
     startButton.focus();
     startButton.tabIndex = 0;
 const frontPage = document.querySelector('#frontPage');
 
+// function to intialize a game. will be called when start a game or restart a game.
 const initGame = function(){
   createEnemy();
   createPlayer();
@@ -87,6 +91,7 @@ const initGame = function(){
   drawGems();
 };
 
+// function to let front page modal go away. disable all buttons to avoid tab focus.
 const clearFrontPage = function() {
     frontPage.style.cssText = 'transform: translate(-9999px, -9999px)';
     ctxSelector.clearRect(0,0,580,200);
@@ -110,10 +115,11 @@ document.addEventListener('keyup', function(e) {
 });
 
 
-// This is about the lost modal and the restart button in that modal
+// This is about the lost modal
 const lostPage = document.querySelector('#lostPage');
 const restartButton = document.querySelector('#restart');
 
+// when game is lost, open Lost Modal. Enable restart button and let it get focus in lostModal.
 const openLostModal = function(){
     lostPage.style.cssText = 'transform: translate(-50%, 0)';
     deleteEnemy();
@@ -127,6 +133,7 @@ const openLostModal = function(){
     restartWinButton.tabIndex = -1;
 };
 
+// when restart a game, let lost modal go away, disable buttons to avoid tab focus.
 const closeLostModal = function(){
     lostPage.style.cssText = 'transform: translate(-9999px, -9999px)';
     start.tabIndex = -1;
@@ -152,6 +159,7 @@ const winStar = document.querySelector('#winstar'),
 winStar.width = 580;
 winStar.height = 200;
 
+// when game is win ,open win page modal (the stars has already drawed by score panel); enable restartWinButton and let it get focus
 const openWinModal = function(){
     winPage.style.cssText = 'transform: translate(-50%, 0)';
     deleteEnemy();
@@ -165,6 +173,7 @@ const openWinModal = function(){
     restartWinButton.focus();
 };
 
+// restart game. close win modal, disable all buttons to aovid tab focus
 const closeWinModal = function(){
     winPage.style.cssText = 'transform: translate(-9999px, -9999px)';
     start.tabIndex = -1;

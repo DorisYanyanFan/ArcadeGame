@@ -1,4 +1,4 @@
-
+//function shuffle. this function will be called to choose a random value in an array.
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
     while (currentIndex !== 0) {
@@ -11,7 +11,7 @@ function shuffle(array) {
     return array;
 }
 
-// Set gem's color randomly through shuffling a color array. Then according to gems' color, set image resource.
+//Gem constructor. Set gem's color randomly through shuffling a color array. Then according to gems' color, set image resource.
 let Gem = function() {
     this.row = 99;
     this.col = 99;
@@ -44,8 +44,8 @@ Gem.prototype.render = function() {
     ctx.restore();
 }
 
-// create 5 gems with random color and random places, store them in an array called fiveGems.
-
+// Foucntion to create 5 gems will be used in the game. This function will be called when game started.
+// First instantiate 5 gem with random color and random places, store them in an array called fiveGems.
 const drawGems = function() {
     const fiveGems = [];
     for(let i=0; i<5; i++) {
@@ -57,7 +57,12 @@ const drawGems = function() {
         };
         fiveGems.push(gem);
     };
-// draw them after 2 seconds, 7 seconds, 12 seconds, 17 seconds and 24 seconds.
+// gem in allGems[] will be drawed on canvas through engine.js. Push/delete each gem into allGems[] at certain time.
+// fiveGems[0] appear in 2 seconds when the game started, dispear at 10 seconds after the game started.
+// fiveGems[1] appear in 7 seconds when the game started, dispear at 14 seconds after the game started.
+// fiveGems[2] appear in 12 seconds when the game started, dispear at 20 seconds after the game started.
+// fiveGems[3] appear in 17 seconds when the game started, dispear at 29 seconds after the game started.
+// fiveGems[4] appear in 24 seconds when the game started, dispear at 30 seconds after the game started.
     timeout28 = window.setTimeout(function(){allGems.push(fiveGems[0])}, 2000);
     timeout23 = window.setTimeout(function(){allGems.push(fiveGems[1])}, 7000);
     timeout20 = window.setTimeout(function(){allGems.splice(0,1)}, 10000);
@@ -70,6 +75,8 @@ const drawGems = function() {
     timeout0 = window.setTimeout(function(){allGems.splice(0,1)}, 30000);
 };
 
+
+// function to stop draw gems on canvas. clear all gems and timeout ID in this game. This function will be called when one game is ended.
 const clearGems = function() {
     allGems = [];
     clearTimeout(timeout28);
