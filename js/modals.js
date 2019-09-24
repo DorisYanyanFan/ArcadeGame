@@ -73,6 +73,7 @@ panel.handleInput = function(direct) {
 
 // module to start the game
 const startButton = document.querySelector('#start');
+    startButton.focus();
     startButton.tabIndex = 0;
 const frontPage = document.querySelector('#frontPage');
 
@@ -88,9 +89,10 @@ const initGame = function(){
 const clearFrontPage = function() {
     frontPage.style.cssText = 'transform: translate(-9999px, -9999px)';
     ctxSelector.clearRect(0,0,580,200);
-    start.tabIndex = -1;
+    startButton.tabIndex = -1;
     restartButton.tabIndex = -1;
     restartWinButton.tabIndex = -1;
+    startButton.blur();
 };
 
 startButton.addEventListener('click', function(){
@@ -120,6 +122,7 @@ const openLostModal = function(){
     game.endTime = timer;
     start.tabIndex = -1;
     restartButton.tabIndex = 0;
+    restartButton.focus();
     restartWinButton.tabIndex = -1;
 };
 
@@ -127,7 +130,8 @@ const closeLostModal = function(){
     lostPage.style.cssText = 'transform: translate(-9999px, -9999px)';
     start.tabIndex = -1;
     restartButton.tabIndex = -1;
-    restartWinButton.tabIndex = -1
+    restartWinButton.tabIndex = -1;
+    restartButton.blur()
 };
 
 restartButton.addEventListener('click',function(){
@@ -150,13 +154,15 @@ const openWinModal = function(){
     start.tabIndex = -1;
     restartButton.tabIndex = -1;
     restartWinButton.tabIndex = 0;
+    restartWinButton.focus();
 };
 
 const closeWinModal = function(){
     winPage.style.cssText = 'transform: translate(-9999px, -9999px)';
     start.tabIndex = -1;
     restartButton.tabIndex = -1;
-    restartWinButton.tabIndex = -1
+    restartWinButton.tabIndex = -1;
+    restartWinButton.blur()
 };
 
 restartWinButton.addEventListener('click',function(){

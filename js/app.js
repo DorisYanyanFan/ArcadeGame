@@ -1,5 +1,6 @@
 // Enemies with random speed and random start line.
 let score = 0,
+    starsNum = 0,
     redraw,
     startTime,
     timer,
@@ -10,7 +11,7 @@ let score = 0,
 var game = {
         status: 'inactive',
         reasonArray: ['You are eaten by a cockroach', 'Time Up'],
-        character: 'boy',
+        character: 'cat-girl',
         endTime: 30,
         get lostReason0() {
             document.querySelector('#reason').textContent = game.reasonArray[0];
@@ -23,7 +24,7 @@ var game = {
 var Enemy = function(row) {
     this.sprite = 'images/enemy-bug.png';
     this.row = row;
-    this.speedArray = [200, 260, 300];
+    this.speedArray = [160, 260, 320];
     this.speed = shuffle(this.speedArray)[0];
     this.startLineArray = [-101, -300, -800, -1000];
     this.x = shuffle(this.startLineArray)[0];
@@ -80,11 +81,17 @@ Player.prototype.update = function(dt) {
     const collect = function collect(gem) {
         if (gem.row === this.row && gem.col === this.col) {
             console.log('GEMgemgem');
-            score += 60;
             gem.row = 99;
             gem.col = 99;
             gem.x = 999;
             gem.y = 999;
+            if (gem.color == 'Green') {
+                score += 60;
+            } else if (gem.color == 'Blue') {
+                score += 80;
+            } else if (gem.color == 'Orange') {
+                score += 100;
+            }
         }
     };
 
@@ -183,19 +190,37 @@ scorePanel.render = function(){
     ctx.font = "30pt Impact";
     ctx.textAlign = "center";
     ctx.fillStyle = "SeaGreen";
-    ctx.fillText(`Time Left: ${game.status == 'active'? timer : game.endTime} sec`, 505/2, 665);
+    ctx.fillText(`Time Left:         sec`, 505/2, 665);
+    ctx.fillText(`${game.status == 'active'? timer : game.endTime}`, 304, 665);
     ctx.fillStyle = "Teal";
-    ctx.fillText(`Score: ${score?score: 0}    Stars:               `, 505/2, 725);
+    ctx.fillText(`Score: ${score?score: 0}`, 100, 725);
+    ctx.fillText(`Stars:  `, 260, 725);
     ctx.strokeStyle = "Black";
     ctx.lineWidth = 2;
-    ctx.strokeText(`Time Left: ${game.status == 'active'? timer : game.endTime} sec`, 505/2, 665);
-    if (timer == 0 && game.status == 'avtive') {
+    ctx.strokeText(`Time Left:         sec`, 505/2, 665);
+    ctx.strokeText(`${game.status == 'active'? timer : game.endTime}`, 304, 665);
+
+// if time up, end the game
+    if (timer == 0 && game.status == 'active') {
         game.lostReason1;
         openLostModal();
     };
 
+// draw the stars according to the score
     ctx.save();
     ctx.scale(0.6,0.6);
-    ctx.drawImage(Resources.get('images/Star.png'), 580, 1080);
+    if (score > 100 && score < 200 ) {
+        ctx.drawImage(Resources.get('images/Star.png'), 510, 1080);
+        starsNum = 1;
+    } else if (score > 199 && score < 278) {
+        ctx.drawImage(Resources.get('images/Star.png'), 510, 1080);
+        ctx.drawImage(Resources.get('images/Star.png'), 610, 1080);
+        starsNum = 2;
+    } else if (score > 279) {
+        ctx.drawImage(Resources.get('images/Star.png'), 510, 1080);
+        ctx.drawImage(Resources.get('images/Star.png'), 610, 1080);
+        ctx.drawImage(Resources.get('images/Star.png'), 720, 1080);
+        starsNum = 3;
+    }
     ctx.restore();
 };
