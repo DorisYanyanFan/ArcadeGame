@@ -81,6 +81,7 @@ const initGame = function(){
   createEnemy();
   createPlayer();
   score = 0;
+  starsNum = 0;
   startTime = Date.now();
   game.status = 'active';
   drawGems();
@@ -143,6 +144,13 @@ restartButton.addEventListener('click',function(){
 // This is about the win modal and its button funciton
 const winPage = document.querySelector('#winPage');
 const restartWinButton = document.querySelector('#restartWin');
+
+// Prepare the canvas to draw stars on the winning page
+const winStar = document.querySelector('#winstar'),
+    ctxStar = winStar.getContext('2d');
+
+winStar.width = 580;
+winStar.height = 200;
 
 const openWinModal = function(){
     winPage.style.cssText = 'transform: translate(-50%, 0)';

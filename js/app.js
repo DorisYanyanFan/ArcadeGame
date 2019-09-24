@@ -68,8 +68,10 @@ Player.prototype.goBack = function() {
     this.col = 3;
 };
 
-// Player is 60px wide, enemy is 100px wide
+
+
 Player.prototype.update = function(dt) {
+    // function about eneny and player collide each oterh. Player is 60px wide, enemy is 100px wide; considering collide each other when 80px away.
     const collide = function collide(enemy){
         if(enemy.x > this.x - 80 && enemy.x < this.x + 80) {
             console.log('this is player and I failed');    /*revised needed*/
@@ -78,6 +80,7 @@ Player.prototype.update = function(dt) {
           }
         };
 
+    //function abouot collect gems and calculate score
     const collect = function collect(gem) {
         if (gem.row === this.row && gem.col === this.col) {
             console.log('GEMgemgem');
@@ -105,7 +108,7 @@ Player.prototype.update = function(dt) {
             }
         }
     };
-
+    // the game is win when player go to row 0
     if (this.row === 0) {
         openWinModal();
     }
@@ -143,7 +146,7 @@ Player.prototype.handleInput = function(direct) {
     };
 };
 
-// function createEnemy will create 9 enemies when called; 3 in each road. Each enemy's speed and start line will be randomly chosed.
+// function createEnemy will create 9 enemies when it is called; 3 enemy in each road. Each enemy's speed and start line will be randomly chosed.
 // function shuffle is declared at gem.js
 
 let allEnemies = [];
@@ -167,17 +170,7 @@ let player = new Player();
 const createPlayer = function(){
     player = new Player();
 };
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
-    var allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down'
-    };
-    player.handleInput(allowedKeys[e.keyCode]);
-});
+
 
 // draw a score panel to show the performance
 const scorePanel = {};
@@ -200,13 +193,13 @@ scorePanel.render = function(){
     ctx.strokeText(`Time Left:         sec`, 505/2, 665);
     ctx.strokeText(`${game.status == 'active'? timer : game.endTime}`, 304, 665);
 
-// if time up, end the game
+// if time up, end the game and the game is lost.
     if (timer == 0 && game.status == 'active') {
         game.lostReason1;
         openLostModal();
     };
 
-// draw the stars according to the score
+// draw the stars on the score panel according to the score
     ctx.save();
     ctx.scale(0.6,0.6);
     if (score > 100 && score < 200 ) {
@@ -223,4 +216,30 @@ scorePanel.render = function(){
         starsNum = 3;
     }
     ctx.restore();
+
+// draw the stars on the wining Page
+    ctxStar.clearRect(0, 0, 580, 200);
+    if (starsNum === 1) {
+        ctxStar.drawImage(Resources.get('images/Star.png'), 90, -18);
+    } else if (starsNum === 2) {
+        ctxStar.drawImage(Resources.get('images/Star.png'), 90, -18);
+        ctxStar.drawImage(Resources.get('images/Star.png'), 240, -18);
+    } else if (starsNum === 3) {
+        ctxStar.drawImage(Resources.get('images/Star.png'), 90, -18);
+        ctxStar.drawImage(Resources.get('images/Star.png'), 240, -18);
+        ctxStar.drawImage(Resources.get('images/Star.png'), 390, -18);
+    }
 };
+
+
+// This listens for key presses and sends the keys to your
+// Player.handleInput() method. You don't need to modify this.
+document.addEventListener('keyup', function(e) {
+    var allowedKeys = {
+        37: 'left',
+        38: 'up',
+        39: 'right',
+        40: 'down'
+    };
+    player.handleInput(allowedKeys[e.keyCode]);
+});

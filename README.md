@@ -39,9 +39,16 @@ The performance will be evaluated according to the gems collected. Green gems wi
     Gems will appear at random place. Totally 5 gems will appear in each game. The first gem will appear at 3 secs after the game started, that one gem appear every 6 seconds.
 
 ## Files
-1. modals.jss is added in the file. This file contains the the modals of front page and win/lose page; and functions about win or loose.
-2. gem.jss is added in the file. This file is about Gem constructor, and related functions.
-3. app.jss is updated
+1. modals.jss added
+    * 1.1 Font page modal: canvas and button in front page; and the function to start game.
+    * 1.2 Lost page modal: button to restart the game, and relevant function.
+    * 1.3 Win page modal: canvas in the winning page, button to restart game and relevant functions.
+2. gem.jss added
+    * This file is about Gem constructor, and related functions.
+3. app.jss modified
+    * 3.1 Enemy object and Play Object updated;
+    * 3.2 Game object created to track game status and store useful information.
+    * 3.3 ScorePane.render function declared. Draw the score panel, also the stars on the winning page.
 4. html and css is updated accordingly.
 
 ## Contributing

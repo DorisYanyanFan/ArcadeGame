@@ -6,28 +6,31 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<!-- The modal showing the game result. -->
+<!-- The modal of game instructions -->
     <div id="frontPage" class="modal">
-        <h3> Collect Gems and Sail</h3>
-        <p class = "notes"> Cross the road and sail out! Gems are randomly dropped on the road, and will disppear after certen time. collect them as many as possible.</p>
-        <p class = "notes"> But you have only 30 seconds, if you didn't sail within 30 seconds, you are staying here with cockroaches.
+        <h2 class = "title"> Sail out</h2>
+        <div class = "instruction">
+        <p> Cross the road and sail out! Gems are randomly dropped on the road, and will disppear after certen time. Collect them as you like.
         </p>
-        <p class = "notes">
-            Watch out those giant, giant cockroaches, they are very hungry now.
+        <p> But you have only 30 seconds, if you didn't reach the seashore within 30 seconds, you are staying here with cockroaches.
         </p>
+        <p>
+            Watch out those giant, giant cockroaches, they are very hungry.
+        </p>
+        </div>
         <canvas id='selector'></canvas>
         <button id="start" tabindex = "0"> Start! </button>
     </div>
 <!-- The model if fail -->
     <div id="lostPage" class="modal">
-        <h2> Whoops </h2>
-        <h3 id="reason"> Something happend </h3>
+        <h2 class = "title"> Whoops </h2>
+        <h3 id="reason" class = "comment"> Something happend </h3>
         <button id="restart" tabindex="-1"> Play Again! </button>
     </div>
 <!-- The model if win -->
         <div id="winPage" class="modal">
-            <h2> Congrats </h2>
-            <h3> Star Pic </h3>
+            <h2 class = "title"> Congrats </h2>
+            <canvas id = "winstar"> </canvas>
             <button id="restartWin" tabindex="-1"> Play Again! </button>
         </div>
 

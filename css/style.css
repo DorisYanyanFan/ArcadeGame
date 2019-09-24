@@ -1,20 +1,41 @@
+html {
+    box-sizing: border-box;
+}
+
 body {
     text-align: center;
     display: flex;
     justify-content: center;
     align-items:center;
     flex-direction:column;
+    font-family: fantasy;
+}
+
+h2 {
+    margin-bottom: 0;
+    margin-top: 5px;
+    font-size: 60px;
+    font-weight: bold;
+}
+
+p {
+    margin-block-start: 0;
+    margin-block-end: 5px;
+}
+
+.instruction {
+    width: 500px;
+    align-self: center;
+    font-weight: 600;
+    text-align: justify;
 }
 
 .modal {
     border: 2px solid black;
     border-radius: 10px;
-    background-color: rgba(112,128,144,0.9);
+    background-color: rgba(61,139,156,0.9);
     position: absolute;
     z-index: 1;
-    width: 580px;
-    height: 760px;
-    top: 30px;
     left: 50%;
     display: flex;
     justify-content: center;
@@ -24,16 +45,25 @@ body {
 #frontPage {
     transition-property: transform;
     transform: translate(-50%, 0);
+    width: 580px;
+    height: 760px;
+    top: 30px;
 }
 
 #lostPage {
     transition-property: transform;
     transform: translate(-999px, -9999px);
+    width: 580px;
+    height: 500px;
+    top: 100px;
 }
 
 #winPage {
   transition-property: transform;
   transform: translate(-999px, -9999px);
+  width: 580px;
+  height: 600px;
+  top: 100px;
 }
 
 button {
